@@ -1,7 +1,7 @@
-import { prisma } from "@/app/constants";
 import bcrypt from "bcrypt";
 import { sign } from "jsonwebtoken";
 import { serialize } from "cookie";
+import { prisma } from "../../constantsBack";
 export const POST = async (req: Request) => {
   const { email, phone, password } = await req.json();
   if (email) {

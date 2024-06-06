@@ -1,4 +1,4 @@
-import { nextProviders } from "@/app/constants";
+import { nextProviders } from "@/constants";
 import NextAuth from "next-auth/next";
 
 const handler = NextAuth(nextProviders);

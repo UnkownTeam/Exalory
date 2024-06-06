@@ -16,6 +16,11 @@
 # production
 /build
 
+# dotenv
+.env.local
+.env.example
+.env
+
 # misc
 .DS_Store
 *.pem

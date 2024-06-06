@@ -2,7 +2,7 @@ import { MdOutlineMail } from "react-icons/md";
 import { FiPhone } from "react-icons/fi";
 import { Input } from "@nextui-org/react";
 
-const EmailPhoneInp = ({ inputType }: TypeProps) => {
+const EmailPhoneInp = ({ inputType, setEmailPhone }: TypeProps) => {
   return (
     <div className="flex mb-[20px] relative">
       <Input
@@ -12,6 +12,7 @@ const EmailPhoneInp = ({ inputType }: TypeProps) => {
         type={inputType === "PHONE" ? "tel" : "email"}
         name={inputType}
         id={inputType}
+        onChange={(e) => setEmailPhone(e.target.value)}
         className=" text-theme-secondary text-[16px] font-semibold leading-none w-[450px]"
         endContent={
           inputType === "PHONE" ? (
@@ -27,6 +28,7 @@ const EmailPhoneInp = ({ inputType }: TypeProps) => {
 
 type TypeProps = {
   inputType: "PHONE" | "EMAIL";
+  setEmailPhone: (value: string) => void;
 };
 
 export default EmailPhoneInp;

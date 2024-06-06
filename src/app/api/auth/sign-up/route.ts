@@ -1,5 +1,10 @@
-import { otpGeneration, transport, mailOptions, prisma } from "@/app/constants";
 import { Twilio } from "twilio";
+import {
+  otpGeneration,
+  prisma,
+  transport,
+  mailOptions,
+} from "../../constantsBack";
 
 export const POST = async (req: Request) => {
   const { email, phone, role } = await req.json();
@@ -14,14 +19,18 @@ export const POST = async (req: Request) => {
       to: `+2${phone}`,
       body: `Your OTP is ${phoneOtp}`,
     });
-    await prisma.user.create({
+    const newUser = await prisma.user.create({
       data: {
         phoneOtp,
         phone,
         role,
       },
     });
-    return Response.json({ message: "Phone sent", otp: phoneOtp });
+    return Response.json({
+      message: "Phone sent",
+      otp: phoneOtp,
+      user: newUser,
+    });
   }
 
   if (email) {
@@ -32,14 +41,18 @@ export const POST = async (req: Request) => {
         to: email,
         text: `Your OTP is ${emailOtp}`,
       });
-      await prisma.user.create({
+      const newUser = await prisma.user.create({
         data: {
           emailOtp,
           email,
           role,
         },
       });
-      return Response.json({ message: "Email sent", otp: emailOtp });
+      return Response.json({
+        message: "Email sent",
+        otp: emailOtp,
+        user: newUser,
+      });
     } catch (error) {
       console.log(error);
     }
