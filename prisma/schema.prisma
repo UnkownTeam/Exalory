@@ -16,7 +16,7 @@ model User {
   emailOtp      Int?     @default(0)
   emailVerified Boolean  @default(false)
   image         String?  @default("")
-  role          Role
+  role          Role     @default(CLIENT)
   phone         String?  @unique
   phoneOtp      Int?     @default(0)
   phoneVerified Boolean  @default(false)

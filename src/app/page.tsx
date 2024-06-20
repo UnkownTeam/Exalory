@@ -1,5 +1,7 @@
-"use client";
-export default function Home() {
-  console.log(document.cookie);
-  return <>Home</>;
-}
+import { redirect } from "next/navigation";
+
+const RootPage = () => {
+  redirect("/en");
+};
+
+export default RootPage;
