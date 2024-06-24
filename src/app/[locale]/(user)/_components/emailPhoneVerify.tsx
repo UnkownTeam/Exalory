@@ -2,7 +2,7 @@ import OtpInput from "react-otp-input";
 const EmailPhoneVerify = ({ setVerifyCode, verifyCode, user }: TypeProps) => {
   return (
     <>
-      <p>Enter the code that sent to {user?.email}</p>
+      <p>Enter the code that sent to {user?.email || user?.phone}</p>
       <OtpInput
         value={verifyCode}
         onChange={setVerifyCode}

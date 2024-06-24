@@ -1,15 +1,14 @@
 import { otpGeneration, prisma } from "@/app/api/constantsBack";
-import { PhoneValidations } from "@/validations/signUpPhone";
+import { PhoneValidations } from "@/validations";
 import { Twilio } from "twilio";
 
 export const POST = async (req: Request) => {
   const requestBody = PhoneValidations.safeParse(await req.json());
 
   if (!requestBody.success)
-    return Response.json({ statusCode: 402, error: requestBody.error });
+    return Response.json({ statusCode: 402,success:false, message: requestBody.error });
 
-  const { data } = requestBody;
-  const { phone } = data;
+  const { phone } = requestBody.data;
 
   const findUser = await prisma.user.findUnique({
     where: {
@@ -18,7 +17,7 @@ export const POST = async (req: Request) => {
   });
 
   if (findUser)
-    return Response.json({ statusCode: 402, error: "User already exists" });
+    return Response.json({ statusCode: 402,success:false ,message: "User already exists" });
 
   try {
     const client = new Twilio(
@@ -38,7 +37,9 @@ export const POST = async (req: Request) => {
       },
     });
     return Response.json({
-      message: "Phone sent",
+      statusCode: 200,
+      success: true,
+      message: "User created successfully and Phone OTP sent",
       otp: phoneOtp,
       user: newUser,
     });
