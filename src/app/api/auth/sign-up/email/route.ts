@@ -10,10 +10,13 @@ export const POST = async (req: Request) => {
   const requestBody = EmailValidation.safeParse(await req.json());
 
   if (!requestBody.success)
-    return Response.json({ statusCode: 402, error: requestBody.error });
+    return Response.json({
+      statusCode: 402,
+      success: false,
+      message: requestBody.error,
+    });
 
-  const { data } = requestBody;
-  const { email } = data;
+  const { email } = requestBody.data;
 
   const findUser = await prisma.user.findUnique({
     where: {
@@ -22,7 +25,11 @@ export const POST = async (req: Request) => {
   });
 
   if (findUser)
-    return Response.json({ statusCode: 402, error: "User already exists" });
+    return Response.json({
+      statusCode: 402,
+      success: false,
+      message: "User already exists",
+    });
 
   const emailOtp = otpGeneration;
   try {
@@ -38,11 +45,13 @@ export const POST = async (req: Request) => {
       },
     });
     return Response.json({
-      message: "Email sent",
+      statusCode: 200,
+      message: "User Created Successfully and Email OTP Sent",
+      success: true,
       otp: emailOtp,
       user: newUser,
     });
   } catch (error) {
-    return Response.json({ statusCode: 402, message: error });
+    return Response.json({ statusCode: 402, success: false, message: error });
   }
 };
